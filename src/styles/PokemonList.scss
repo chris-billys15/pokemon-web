@@ -1,0 +1,39 @@
+@import "../variable.scss";
+
+.pokemonlist-page {
+	width: 100% !important;
+	max-width: 1600px;
+	.pl-container {
+		width: 100%;
+		display: grid;
+		grid-template-columns: 25% 25% 25% 25%;
+		padding: 10px 20px;
+		@media screen and (max-width: $breakpoint-md) {
+			grid-template-columns: 33% 33% 33%;
+		}
+		@media screen and (max-width: $breakpoint-sm) {
+			grid-template-columns: 50% 50%;
+		}
+		@media screen and (max-width: $breakpoint-xs) {
+			grid-template-columns: 100%;
+		}
+		.pl-item {
+			display: flex;
+			margin: 12px;
+			flex-direction: column;
+			.card-body {
+				padding: 20px 10px;
+			}
+			.pokemon-name {
+				font-size: 20px;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.link-to {
+	color: #313131;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	text-decoration: none;
+}

@@ -1,0 +1,62 @@
+/* BREAKPOINTS */
+.pokemonlist-page {
+  width: 100% !important;
+  max-width: 1600px;
+}
+
+.pokemonlist-page .pl-container {
+  width: 100%;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 25% 25% 25% 25%;
+      grid-template-columns: 25% 25% 25% 25%;
+  padding: 10px 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .pokemonlist-page .pl-container {
+    -ms-grid-columns: 33% 33% 33%;
+        grid-template-columns: 33% 33% 33%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .pokemonlist-page .pl-container {
+    -ms-grid-columns: 50% 50%;
+        grid-template-columns: 50% 50%;
+  }
+}
+
+@media screen and (max-width: 378px) {
+  .pokemonlist-page .pl-container {
+    -ms-grid-columns: 100%;
+        grid-template-columns: 100%;
+  }
+}
+
+.pokemonlist-page .pl-container .pl-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 12px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.pokemonlist-page .pl-container .pl-item .card-body {
+  padding: 20px 10px;
+}
+
+.pokemonlist-page .pl-container .pl-item .pokemon-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.link-to {
+  color: #313131;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-decoration: none;
+}
+/*# sourceMappingURL=PokemonList.css.map */
