@@ -1,5 +1,7 @@
 import React from "react";
+import { CardImg } from "reactstrap";
 
+const data = {};
 export const MyPokemon = () => {
-	return <>mypokemon</>;
+	return <div>mypokemon</div>;
 };

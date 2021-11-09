@@ -1,8 +1,54 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@apollo/react-hooks";
+import { GET_POKEMONS } from "../graphql/get-pokemons";
 import { Card, CardImg, CardBody, CardTitle, Button } from "reactstrap";
 import { toPascalCase } from "../utility";
 import "../styles/PokemonList.scss";
+
+const PokemonList = () => {
+	const [pokemons, setPokemons] = React.useState([]);
+	const { data } = useQuery(GET_POKEMONS, {
+		variables: {},
+	});
+	React.useEffect(() => {
+		if (data) {
+			setPokemons(pokemons.concat(data.pokemons?.results));
+		}
+	}, [data]);
+
+	return (
+		<div className="pokemonlist-page">
+			<div className="pl-container">
+				{pokemons.map((pokemon) => {
+					return (
+						<Card key={pokemon.id} className="pl-item">
+							<Link to={`/pokemon/${pokemon.name}`}>
+								<CardImg alt="Card image cap" src={pokemon.image} top />
+							</Link>
+							<CardBody>
+								<Link className="link-to" to={`/pokemon/${pokemon.id}`}>
+									<CardTitle className="pokemon-name">
+										{toPascalCase(pokemon.name)}
+									</CardTitle>
+								</Link>
+								<Button
+									onClick={() => {
+										console.log("catch me");
+									}}
+								>
+									Catch Me
+								</Button>
+							</CardBody>
+						</Card>
+					);
+				})}
+			</div>
+		</div>
+	);
+};
+
+export default PokemonList;
 
 const mockData = [
 	{
@@ -79,43 +125,3 @@ const mockData = [
 			"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png",
 	},
 ];
-
-const PokemonList = () => {
-	const [pokemons, setPokemons] = React.useState(mockData);
-	useEffect(() => {
-		console.log("test");
-	});
-
-	return (
-		<div className="pokemonlist-page">
-			<div>PokemonList</div>
-			<div className="pl-container">
-				{pokemons.map((pokemon) => {
-					return (
-						<Card className="pl-item">
-							<Link to={`/pokemon/${pokemon.id}`}>
-								<CardImg alt="Card image cap" src={pokemon.image} top />
-							</Link>
-							<CardBody>
-								<Link className="link-to" to={`/pokemon/${pokemon.id}`}>
-									<CardTitle className="pokemon-name">
-										{toPascalCase(pokemon.name)}
-									</CardTitle>
-								</Link>
-								<Button
-									onClick={() => {
-										console.log("catch me");
-									}}
-								>
-									Catch Me
-								</Button>
-							</CardBody>
-						</Card>
-					);
-				})}
-			</div>
-		</div>
-	);
-};
-
-export { PokemonList };

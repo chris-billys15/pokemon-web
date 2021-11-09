@@ -4,25 +4,32 @@ import {
 	Route,
 	Navigate,
 } from "react-router-dom";
-import { PokemonList } from "../src/components/PokemonList";
-import { PokemonDetail } from "../src/components/PokemonDetail";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+import PokemonList from "../src/components/PokemonList";
+import PokemonDetail from "../src/components/PokemonDetail";
 import { MyPokemon } from "../src/components/MyPokemon";
 import { NavbarComponent } from "../src/components/Navbar";
 import "./App.css";
 
 function App() {
+	const client = new ApolloClient({
+		uri: "https://graphql-pokeapi.graphcdn.app",
+	});
 	return (
-		<div className="App">
-			<Router>
-				<NavbarComponent />
-				<Routes>
-					<Route path="/" element={<PokemonList />}></Route>
-					<Route path="/pokemon/:id" element={<PokemonDetail />}></Route>
-					<Route path="/mypokemon" element={<MyPokemon />}></Route>
-					<Route path="/:any" element={<Navigate to="/"></Navigate>}></Route>
-				</Routes>
-			</Router>
-		</div>
+		<ApolloProvider client={client}>
+			<div className="App">
+				<Router>
+					<NavbarComponent />
+					<Routes>
+						<Route path="/" element={<PokemonList />}></Route>
+						<Route path="/pokemon/:name" element={<PokemonDetail />}></Route>
+						<Route path="/mypokemon" element={<MyPokemon />}></Route>
+						<Route path="/:any" element={<Navigate to="/"></Navigate>}></Route>
+					</Routes>
+				</Router>
+			</div>
+		</ApolloProvider>
 	);
 }
 
