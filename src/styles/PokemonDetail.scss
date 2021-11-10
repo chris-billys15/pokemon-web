@@ -2,11 +2,19 @@
 
 .pokemondetail-page {
 	width: 100% !important;
-	max-width: 1600px;
 	.pd-content {
 		width: 100%;
 		display: flex;
 		flex-direction: column;
+		padding: 20px;
+		.btn-catch {
+			border-radius: 15px;
+			font-weight: bold;
+			margin: 20px;
+			width: 80%;
+			align-self: center;
+			padding: 10px;
+		}
 		.pokemondetail-container {
 			margin-top: 20px;
 			display: grid;
@@ -26,7 +34,7 @@
 		}
 		.poke-img {
 			border-radius: 25px;
-			max-width: 600px;
+			// max-width: 600px;
 			border: 2px solid #313131;
 			background-color: #e5e5e5;
 			align-self: center;
@@ -37,12 +45,10 @@
 			flex-direction: column;
 			align-items: center;
 			@media screen and (max-width: 1152px) {
-				margin-top: 20px;
 				align-items: center;
 			}
 		}
 		.typeandsize-container {
-			margin-top: 20px;
 			width: 80%;
 			border-radius: 25px;
 			background-color: #effcd5;
@@ -56,6 +62,7 @@
 			flex-direction: row;
 			.bodysize-item {
 				text-align: left;
+				text-decoration: underline;
 				font-size: 20px;
 				font-weight: bold;
 				color: #0c3348;
@@ -74,6 +81,8 @@
 			&-stats {
 				background-color: #0c3348;
 				width: 80%;
+				margin-top: 40px;
+				align-self: center;
 				.container-title {
 					text-align: left;
 					font-size: 20px;
@@ -82,7 +91,7 @@
 				}
 				.poke-stats {
 					display: grid;
-					grid-template-columns: 50% 50%;
+					grid-template-columns: 33% 33% 33%;
 					margin-top: 20px;
 					padding: 10px;
 					border-radius: 15px;
@@ -99,9 +108,18 @@
 				background-color: #ffffff;
 				.container-title {
 					text-align: left;
+					text-decoration: underline;
 					font-size: 20px;
 					font-weight: bold;
 					color: #0c3348;
+				}
+				.moves-container {
+					display: grid;
+					grid-template-columns: 33% 33% 33%;
+					margin-top: 10px;
+					div {
+						text-align: left;
+					}
 				}
 				.type-container {
 					display: flex;

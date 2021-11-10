@@ -1,22 +1,56 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router";
-import { CardImg } from "reactstrap";
+import {
+	CardImg,
+	Button,
+	Modal,
+	ModalHeader,
+	ModalBody,
+	Input,
+	ModalFooter,
+} from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_POKEMON } from "../graphql/get-pokemons";
 import { toPascalCase, pad } from "../utility";
 import "../styles/PokemonDetail.scss";
+import MyPokemonContext from "../context/MyPokemonContext";
 
 const PokemonDetail = () => {
-	const [pokemon, setPokemon] = React.useState(null);
+	const [modalOpen, setModalOpen] = useState(false);
+	const [nick, setNick] = useState("");
+	const [pokemon, setPokemon] = useState(null);
 	const { name } = useParams();
-	const { data } = useQuery(GET_POKEMON, {
+	const myPokemonContext = useContext(MyPokemonContext);
+
+	const { data, loading, error } = useQuery(GET_POKEMON, {
 		variables: { name: name },
 	});
+
 	React.useEffect(() => {
 		if (data) {
 			setPokemon(data.pokemon);
 		}
 	}, [data]);
+
+	const catchPokemon = (pokemon) => {
+		let isCaught = Math.random() < 0.5;
+		console.log(pokemon);
+		if (isCaught) {
+			// showPopup
+			setModalOpen(true);
+		} else {
+			notify(`Too bad! Pokemon got away`);
+		}
+	};
+
+	const notify = (str) =>
+		toast.info(str, {
+			icon: ({ theme, type }) => <img width="20px" src="/pokeball.png" />,
+		});
+
+	if (error) return <div>Error</div>;
+	if (loading || !data) return <div>Loading...</div>;
 
 	return (
 		<div className="pokemondetail-page">
@@ -30,8 +64,6 @@ const PokemonDetail = () => {
 							className="poke-img"
 							src={pokemon?.sprites?.front_default}
 						/>
-					</div>
-					<div className="right-container flex-grow-1 ">
 						<div className="detail-container detail-container-stats">
 							<div className="container-title">Pokemon Base Stats</div>
 							<div className="poke-stats">
@@ -44,6 +76,21 @@ const PokemonDetail = () => {
 								})}
 							</div>
 						</div>
+						<Button
+							className="btn-catch"
+							color="danger"
+							onClick={() => {
+								console.log("catch me");
+								catchPokemon(pokemon);
+								// localStorage.setItem("my-pokemon", JSON.stringify({
+								// 	pokemon
+								// }))
+							}}
+						>
+							Catch Me
+						</Button>
+					</div>
+					<div className="right-container flex-grow-1 ">
 						<div className="typeandsize-container">
 							<div className="bodysize-container">
 								<div className="d-flex flex-column mr-5">
@@ -71,10 +118,51 @@ const PokemonDetail = () => {
 									})}
 								</div>
 							</div>
+							<div className="detail-container detail-container-type mt-4">
+								<div className="container-title">Moves</div>
+								<div className="moves-container">
+									{pokemon?.moves.map((move) => {
+										return <div>{move.move?.name}</div>;
+									})}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			{/* modal  */}
+			<Modal isOpen={modalOpen}>
+				<ModalHeader
+					toggle={function noRefCheck() {
+						setModalOpen(false);
+					}}
+				>
+					What is your pokemon nickname?
+				</ModalHeader>
+				<ModalBody>
+					<Input
+						placeholder="Nickname"
+						onChange={(e) => setNick(e.target.value)}
+					/>
+				</ModalBody>
+				<ModalFooter>
+					<Button
+						color="primary"
+						disabled={nick === ""}
+						onClick={() => {
+							console.log(nick);
+							myPokemonContext.addNewPokemon(nick, pokemon);
+							//save pokemon
+							setModalOpen(false);
+							setNick("");
+							notify(`Congratulation! Pokemon is caught`);
+						}}
+					>
+						Rename
+					</Button>{" "}
+				</ModalFooter>
+			</Modal>
+			<ToastContainer />
 		</div>
 	);
 };

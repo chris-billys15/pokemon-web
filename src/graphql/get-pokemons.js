@@ -33,14 +33,18 @@ export const GET_POKEMON = gql`
 					name
 				}
 			}
+			moves {
+				move {
+					url
+					name
+				}
+			}
 			stats {
 				base_stat
 				stat {
 					name
 				}
-				effort
 			}
-			status
 			height
 			weight
 		}
