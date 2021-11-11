@@ -38,7 +38,7 @@ function App() {
 							element={<MyPokemon />}
 						></Route>
 						<Route
-							path="/:any"
+							path={`${process.env.PUBLIC_URL}/:any`}
 							element={<Navigate to={`${process.env.PUBLIC_URL}/`}></Navigate>}
 						></Route>
 					</Routes>
