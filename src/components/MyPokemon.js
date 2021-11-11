@@ -14,6 +14,18 @@ import { useMyPokemon } from "../context/MyPokemonContext";
 export const MyPokemon = () => {
 	const { myPokemon, releasePokemon } = useMyPokemon();
 	if (!myPokemon) return <div>Loading...</div>;
+	if (myPokemon.length === 0) {
+		return (
+			<div className="pokemonlist-page">
+				<img
+					className="empty-img"
+					width="50%"
+					src={process.env.PUBLIC_URL + "/empty.jpg"}
+				/>
+				<div className="empty-text">No Pokemon Yet</div>
+			</div>
+		);
+	}
 	return (
 		<div className="pokemonlist-page">
 			<div className="pl-container">

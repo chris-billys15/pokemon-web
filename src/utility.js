@@ -21,7 +21,9 @@ const pad = (num, size) => {
 
 const notify = (str) =>
 	toast.warn(str, {
-		icon: ({ theme, type }) => <img width="20px" src="/pokeball.png" />,
+		icon: ({ theme, type }) => (
+			<img width="20px" src={process.env.PUBLIC_URL + "/pokeball.png"} />
+		),
 	});
 
 const isImageExist = (url) => {

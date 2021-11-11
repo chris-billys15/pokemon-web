@@ -9,6 +9,7 @@ import {
 	Input,
 	ModalFooter,
 	FormFeedback,
+	Spinner,
 } from "reactstrap";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_POKEMON } from "../graphql/get-pokemons";
@@ -45,7 +46,12 @@ const PokemonDetail = () => {
 	};
 
 	if (error) return <div>Error</div>;
-	if (loading || !data) return <div>Loading...</div>;
+	if (loading || !data)
+		return (
+			<div className="pokemondetail-page">
+				<Spinner className="align-self-center" color="warning" type="grow" />
+			</div>
+		);
 
 	return (
 		<div className="pokemondetail-page">
