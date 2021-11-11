@@ -6,18 +6,19 @@ import {
 } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-import MyPokemonProvider from "./context/MyPokemonProvider";
 import PokemonList from "../src/components/PokemonList";
 import PokemonDetail from "../src/components/PokemonDetail";
 import { MyPokemon } from "../src/components/MyPokemon";
 import { NavbarComponent } from "../src/components/Navbar";
 import "./App.css";
-import { useContext, useEffect } from "react";
-import MyPokemonContext from "./context/MyPokemonContext";
+import { useEffect } from "react";
 
 function App() {
 	const client = new ApolloClient({
 		uri: "https://graphql-pokeapi.graphcdn.app",
+	});
+	useEffect(() => {
+		console.log(process.env.PUBLIC_URL);
 	});
 	return (
 		<ApolloProvider client={client}>
