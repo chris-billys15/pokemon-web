@@ -37,10 +37,10 @@ function App() {
 							path={`${process.env.PUBLIC_URL}/mypokemon`}
 							element={<MyPokemon />}
 						></Route>
-						<Route
+						{/* <Route
 							path={`${process.env.PUBLIC_URL}/:any`}
 							element={<Navigate to={`${process.env.PUBLIC_URL}/`}></Navigate>}
-						></Route>
+						></Route> */}
 					</Routes>
 				</Router>
 			</div>
