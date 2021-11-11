@@ -10,8 +10,8 @@ import {
 } from "reactstrap";
 
 const links = [
-	{ href: "/", text: "Pokedex" },
-	{ href: "/mypokemon", text: "My Pokemon" },
+	{ href: `${process.env.PUBLIC_URL}/`, text: "Pokedex" },
+	{ href: `${process.env.PUBLIC_URL}/mypokemon`, text: "My Pokemon" },
 ];
 const createNavItem = (key, item) => (
 	<NavItem>
@@ -30,7 +30,7 @@ const NavbarComponent = () => {
 	return (
 		<div>
 			<Navbar color="danger" dark expand="md">
-				<NavbarBrand className="me-auto" href="/">
+				<NavbarBrand className="me-auto" href={`${process.env.PUBLIC_URL}/`}>
 					Pokemon Web
 				</NavbarBrand>
 				<NavbarToggler

@@ -62,7 +62,7 @@ const PokemonList = () => {
 				{data.pokemons.results.map((pokemon) => {
 					return (
 						<Card key={pokemon.name} className="pl-item">
-							<Link to={`/pokemon/${pokemon.name}`}>
+							<Link to={`${process.env.PUBLIC_URL}/pokemon/${pokemon.name}`}>
 								<CardImg
 									placeholder="/pokeball.png"
 									alt="Card image cap"
@@ -71,7 +71,10 @@ const PokemonList = () => {
 								/>
 							</Link>
 							<CardBody>
-								<Link className="link-to" to={`/pokemon/${pokemon.name}`}>
+								<Link
+									className="link-to"
+									to={`${process.env.PUBLIC_URL}/pokemon/${pokemon.name}`}
+								>
 									<CardTitle className="pokemon-name">
 										{pad(pokemon.id, 3)}
 									</CardTitle>
