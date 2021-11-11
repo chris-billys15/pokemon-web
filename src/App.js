@@ -26,22 +26,13 @@ function App() {
 				<Router>
 					<NavbarComponent />
 					<Routes>
+						<Route path={`/`} element={<PokemonList />}></Route>
+						<Route path={`/pokemon/:name`} element={<PokemonDetail />}></Route>
+						<Route path={`/mypokemon`} element={<MyPokemon />}></Route>
 						<Route
-							path={`${process.env.PUBLIC_URL}/`}
-							element={<PokemonList />}
+							path={`/:any`}
+							element={<Navigate to={`/`}></Navigate>}
 						></Route>
-						<Route
-							path={`${process.env.PUBLIC_URL}/pokemon/:name`}
-							element={<PokemonDetail />}
-						></Route>
-						<Route
-							path={`${process.env.PUBLIC_URL}/mypokemon`}
-							element={<MyPokemon />}
-						></Route>
-						{/* <Route
-							path={`${process.env.PUBLIC_URL}/:any`}
-							element={<Navigate to={`${process.env.PUBLIC_URL}/`}></Navigate>}
-						></Route> */}
 					</Routes>
 				</Router>
 			</div>

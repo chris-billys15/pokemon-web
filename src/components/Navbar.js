@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
 	Navbar,
 	NavbarBrand,
@@ -6,18 +7,17 @@ import {
 	NavbarToggler,
 	Nav,
 	NavItem,
-	NavLink,
 } from "reactstrap";
 
 const links = [
-	{ href: `${process.env.PUBLIC_URL}/`, text: "Pokedex" },
-	{ href: `${process.env.PUBLIC_URL}/mypokemon`, text: "My Pokemon" },
+	{ href: `/`, text: "Pokedex" },
+	{ href: `/mypokemon`, text: "My Pokemon" },
 ];
 const createNavItem = (key, item) => (
-	<NavItem>
-		<NavLink key={key} href={item.href}>
+	<NavItem className="ml-3">
+		<Link className="text-white" key={key} to={item.href}>
 			{item.text}
-		</NavLink>
+		</Link>
 	</NavItem>
 );
 
@@ -30,9 +30,7 @@ const NavbarComponent = () => {
 	return (
 		<div>
 			<Navbar color="danger" dark expand="md">
-				<NavbarBrand className="me-auto" href={`${process.env.PUBLIC_URL}/`}>
-					Pokemon Web
-				</NavbarBrand>
+				<NavbarBrand className="text-white">Pokemon Web</NavbarBrand>
 				<NavbarToggler
 					className="me-2"
 					onClick={() => {
