@@ -6,9 +6,11 @@ import reportWebVitals from "./reportWebVitals";
 import MyPokemonProvider from "./context/MyPokemonProvider";
 
 ReactDOM.render(
-	<MyPokemonProvider>
-		<App />
-	</MyPokemonProvider>,
+	<React.StrictMode>
+		<MyPokemonProvider>
+			<App />
+		</MyPokemonProvider>
+	</React.StrictMode>,
 	document.getElementById("root")
 );
 

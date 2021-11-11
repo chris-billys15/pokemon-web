@@ -21,19 +21,34 @@ const MyPokemonProvider = ({ children }) => {
 		}
 	};
 
+	const pokemonWithNicknameExist = (nickname, species) => {
+		let found = false;
+		let i = 0;
+		while (!found && i < myPokemon.length) {
+			if (
+				myPokemon[i].nickname === nickname &&
+				myPokemon[i].species === species
+			) {
+				found = true;
+			}
+			i++;
+		}
+		return found;
+	};
 	const addNewPokemon = (nickname, pokemon) => {
 		try {
-			console.log("add new pokemon");
-			console.log(pokemon);
-			console.log("mypokemon: ", myPokemon);
-			let data = [
-				{
-					image: pokemon?.sprites?.front_default,
-					nickname: nickname,
-					species: pokemon?.name,
-				},
-			];
-			saveMyPokemon(data);
+			const bool = pokemonWithNicknameExist(nickname, pokemon?.name);
+			if (!bool) {
+				let data = [
+					{
+						image: pokemon?.sprites?.front_default,
+						nickname: nickname,
+						species: pokemon?.name,
+					},
+				];
+				saveMyPokemon(myPokemon.concat(data));
+			}
+			return !bool;
 		} catch (e) {
 			console.log(e);
 		}
@@ -48,6 +63,7 @@ const MyPokemonProvider = ({ children }) => {
 		<MyPokemonContext.Provider
 			value={{
 				myPokemon,
+				pokemonWithNicknameExist,
 				setMyPokemon,
 				saveMyPokemon,
 				addNewPokemon,

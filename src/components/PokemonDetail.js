@@ -8,18 +8,20 @@ import {
 	ModalBody,
 	Input,
 	ModalFooter,
+	FormFeedback,
 } from "reactstrap";
-import { ToastContainer, toast } from "react-toastify";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_POKEMON } from "../graphql/get-pokemons";
-import { toPascalCase, pad } from "../utility";
-import "../styles/PokemonDetail.scss";
+import { toPascalCase, pad, notify } from "../utility";
+import { ToastContainer } from "react-toastify";
 import MyPokemonContext from "../context/MyPokemonContext";
+import "../styles/PokemonDetail.scss";
 
 const PokemonDetail = () => {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [nick, setNick] = useState("");
 	const [pokemon, setPokemon] = useState(null);
+	const [invalidInput, setInvalidInput] = useState(false);
 	const { name } = useParams();
 	const myPokemonContext = useContext(MyPokemonContext);
 
@@ -35,19 +37,12 @@ const PokemonDetail = () => {
 
 	const catchPokemon = (pokemon) => {
 		let isCaught = Math.random() < 0.5;
-		console.log(pokemon);
 		if (isCaught) {
-			// showPopup
 			setModalOpen(true);
 		} else {
 			notify(`Too bad! Pokemon got away`);
 		}
 	};
-
-	const notify = (str) =>
-		toast.info(str, {
-			icon: ({ theme, type }) => <img width="20px" src="/pokeball.png" />,
-		});
 
 	if (error) return <div>Error</div>;
 	if (loading || !data) return <div>Loading...</div>;
@@ -61,6 +56,7 @@ const PokemonDetail = () => {
 				<div className="pokemondetail-container">
 					<div className="d-flex flex-column flex-grow-1">
 						<CardImg
+							placeholder="/pokeball.png"
 							className="poke-img"
 							src={pokemon?.sprites?.front_default}
 						/>
@@ -80,11 +76,7 @@ const PokemonDetail = () => {
 							className="btn-catch"
 							color="danger"
 							onClick={() => {
-								console.log("catch me");
 								catchPokemon(pokemon);
-								// localStorage.setItem("my-pokemon", JSON.stringify({
-								// 	pokemon
-								// }))
 							}}
 						>
 							Catch Me
@@ -107,24 +99,31 @@ const PokemonDetail = () => {
 								</div>
 							</div>
 							<div className="detail-container detail-container-type">
-								<div className="container-title">Type</div>
+								<div className="container-title">Types</div>
 								<div className="type-container">
 									{pokemon?.types.map((item) => {
 										return (
 											<div
 												className={`poke-type ${item.type.name}-type`}
-											>{`${toPascalCase(item.type.name)}`}</div>
+											>{`${toPascalCase(item.type.name).replace(
+												"-",
+												" "
+											)}`}</div>
 										);
 									})}
 								</div>
 							</div>
 							<div className="detail-container detail-container-type mt-4">
 								<div className="container-title">Moves</div>
-								<div className="moves-container">
+								<ul className="moves-container">
 									{pokemon?.moves.map((move) => {
-										return <div>{move.move?.name}</div>;
+										return (
+											<li className="text-left">
+												{toPascalCase(move.move?.name)}
+											</li>
+										);
 									})}
-								</div>
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -135,6 +134,7 @@ const PokemonDetail = () => {
 				<ModalHeader
 					toggle={function noRefCheck() {
 						setModalOpen(false);
+						setNick("");
 					}}
 				>
 					What is your pokemon nickname?
@@ -143,19 +143,24 @@ const PokemonDetail = () => {
 					<Input
 						placeholder="Nickname"
 						onChange={(e) => setNick(e.target.value)}
+						invalid={invalidInput}
 					/>
+					<FormFeedback>
+						Oh no! The same pokemon with that nickname is already exist!
+					</FormFeedback>
 				</ModalBody>
 				<ModalFooter>
 					<Button
 						color="primary"
 						disabled={nick === ""}
 						onClick={() => {
-							console.log(nick);
-							myPokemonContext.addNewPokemon(nick, pokemon);
-							//save pokemon
-							setModalOpen(false);
-							setNick("");
-							notify(`Congratulation! Pokemon is caught`);
+							const success = myPokemonContext.addNewPokemon(nick, pokemon);
+							setInvalidInput(!success);
+							if (success) {
+								setModalOpen(false);
+								setNick("");
+								notify(`Congratulation! Pokemon is caught`);
+							}
 						}}
 					>
 						Rename
@@ -174,99 +179,4 @@ const mapStats = {
 	"special-defense": "Sp Def",
 	speed: "Speed",
 };
-const data = {
-	pokemon: {
-		id: 1,
-		name: "bulbasaur",
-		sprites: {
-			front_default:
-				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-			__typename: "Sprite",
-		},
-		types: [
-			{
-				type: {
-					name: "grass",
-					__typename: "BaseName",
-				},
-				__typename: "Type",
-			},
-			{
-				type: {
-					name: "poison",
-					__typename: "BaseName",
-				},
-				__typename: "Type",
-			},
-		],
-		forms: [
-			{
-				name: "bulbasaur",
-				url: "https://pokeapi.co/api/v2/pokemon-form/1/",
-				__typename: "BaseName",
-			},
-		],
-		stats: [
-			{
-				base_stat: 45,
-				stat: {
-					name: "hp",
-					__typename: "BaseName",
-				},
-				effort: 0,
-				__typename: "Stat",
-			},
-			{
-				base_stat: 49,
-				stat: {
-					name: "attack",
-					__typename: "BaseName",
-				},
-				effort: 0,
-				__typename: "Stat",
-			},
-			{
-				base_stat: 49,
-				stat: {
-					name: "defense",
-					__typename: "BaseName",
-				},
-				effort: 0,
-				__typename: "Stat",
-			},
-			{
-				base_stat: 65,
-				stat: {
-					name: "special-attack",
-					__typename: "BaseName",
-				},
-				effort: 1,
-				__typename: "Stat",
-			},
-			{
-				base_stat: 65,
-				stat: {
-					name: "special-defense",
-					__typename: "BaseName",
-				},
-				effort: 0,
-				__typename: "Stat",
-			},
-			{
-				base_stat: 45,
-				stat: {
-					name: "speed",
-					__typename: "BaseName",
-				},
-				effort: 0,
-				__typename: "Stat",
-			},
-		],
-		status: true,
-		height: 7,
-		weight: 69,
-		__typename: "Pokemon",
-	},
-};
-
 export default PokemonDetail;

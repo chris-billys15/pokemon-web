@@ -1,7 +1,9 @@
 import React from "react";
+import { toast } from "react-toastify";
 
 const toPascalCase = (s) => {
 	if (s) {
+		s = s.replace("-", " ");
 		return s.replace(/\w+/g, function (w) {
 			return w[0].toUpperCase() + w.slice(1).toLowerCase();
 		});
@@ -17,4 +19,18 @@ const pad = (num, size) => {
 	return num;
 };
 
-export { toPascalCase, pad };
+const notify = (str) =>
+	toast.warn(str, {
+		icon: ({ theme, type }) => <img width="20px" src="/pokeball.png" />,
+	});
+
+const isImageExist = (url) => {
+	// var http = new XMLHttpRequest();
+	// http.open("HEAD", url, false);
+	// http.send();
+	// return http.status != 404;
+	var img = new Image();
+	img.src = url;
+	return img.height != 0;
+};
+export { toPascalCase, pad, notify, isImageExist };

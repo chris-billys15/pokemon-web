@@ -7,7 +7,8 @@ import {
 	Button,
 	CardSubtitle,
 } from "reactstrap";
-import { toPascalCase } from "../utility";
+import { notify, toPascalCase } from "../utility";
+import { ToastContainer } from "react-toastify";
 import { useMyPokemon } from "../context/MyPokemonContext";
 
 export const MyPokemon = () => {
@@ -18,16 +19,25 @@ export const MyPokemon = () => {
 			<div className="pl-container">
 				{myPokemon.map((pokemon, index) => {
 					return (
-						<Card key={pokemon.nick} className="pl-item">
+						<Card key={pokemon.nickname} className="pl-item">
 							<CardImg alt="Card image cap" src={pokemon.image} top />
 							<CardBody>
 								<CardTitle className="pokemon-name">
-									{toPascalCase(pokemon.nickname)}
+									{pokemon.nickname}
 								</CardTitle>
-								<CardSubtitle>{toPascalCase(pokemon.species)}</CardSubtitle>
+								<CardSubtitle className="pokemon-species">
+									[ {toPascalCase(pokemon.species)} ]
+								</CardSubtitle>
 								<Button
+									className="load-btn"
+									color="danger"
 									onClick={() => {
 										releasePokemon(index);
+										notify(
+											`${pokemon.nickname} [ ${toPascalCase(
+												pokemon.species
+											)} ] is released to the wild`
+										);
 									}}
 								>
 									Release
@@ -37,6 +47,7 @@ export const MyPokemon = () => {
 					);
 				})}
 			</div>
+			<ToastContainer />
 		</div>
 	);
 };
