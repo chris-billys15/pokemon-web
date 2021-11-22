@@ -6,6 +6,11 @@ import {
 	CardTitle,
 	Button,
 	CardSubtitle,
+	Modal,
+	ModalHeader,
+	ModalBody,
+	Input,
+	ModalFooter,
 } from "reactstrap";
 import { notify, toPascalCase } from "../utility";
 import { ToastContainer } from "react-toastify";
@@ -13,6 +18,9 @@ import { useMyPokemon } from "../context/MyPokemonContext";
 
 export const MyPokemon = () => {
 	const { myPokemon, releasePokemon } = useMyPokemon();
+	const [modalOpen, setModalOpen] = useState(false);
+	const [currPokeIndex, setCurrPokeIndex] = useState(-1);
+	const [currPokemon, setCurrPokemon] = useState(null);
 	if (!myPokemon) return <div>Loading...</div>;
 	if (myPokemon.length === 0) {
 		return (
@@ -44,12 +52,9 @@ export const MyPokemon = () => {
 									className="load-btn"
 									color="danger"
 									onClick={() => {
-										releasePokemon(index);
-										notify(
-											`${pokemon.nickname} [ ${toPascalCase(
-												pokemon.species
-											)} ] is released to the wild`
-										);
+										setModalOpen(true);
+										setCurrPokeIndex(index);
+										setCurrPokemon(pokemon);
 									}}
 								>
 									Release
@@ -59,6 +64,40 @@ export const MyPokemon = () => {
 					);
 				})}
 			</div>
+			<Modal isOpen={modalOpen}>
+				<ModalHeader
+					toggle={function noRefCheck() {
+						setModalOpen(false);
+						setNick("");
+					}}
+				>
+					Are you sure you want to release this pokemon?
+				</ModalHeader>
+				<ModalFooter>
+					<Button
+						color="danger"
+						onClick={() => {
+							releasePokemon(currPokeIndex);
+							setModalOpen(false);
+							notify(
+								`${currPokemon.nickname} [ ${toPascalCase(
+									currPokemon.species
+								)} ] is released to the wild`
+							);
+						}}
+					>
+						Release
+					</Button>{" "}
+					<Button
+						color="grey"
+						onClick={() => {
+							setModalOpen(false);
+						}}
+					>
+						Cancel
+					</Button>{" "}
+				</ModalFooter>
+			</Modal>
 			<ToastContainer />
 		</div>
 	);
